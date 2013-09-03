@@ -2,7 +2,7 @@ This OpenSeadragon ( http://openseadragon.github.io/ ) plugin provide
 a scale bar which adjusts depending on the zoom level.
 
 It can be used like this:
-
+`````javascript
 var viewer = new OpenSeadragon.Viewer(...);
 viewer.scalebar({
   width: ...,
@@ -10,13 +10,16 @@ viewer.scalebar({
   pixelsPerMeter: ...,
   color: ...
 });
+`````
 
 To change any property, just call viewer.scalebar with the updated property.
 For example, to change the pixelsPerMeter:
 
+`````javascript
 viewer.scalebar({
   pixelsPerMeter: ...
 });
+`````
 
 If width, height or pixelsPerMeter are not set (or set to 0), the bar is hidden.
 
