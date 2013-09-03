@@ -1,4 +1,4 @@
-This OpenSeadragon ( http://openseadragon.github.io/ ) plugin provide 
+This OpenSeadragon ( http://openseadragon.github.io/ ) plugin provides 
 a scale bar which adjusts depending on the zoom level.
 
 It can be used like this:
