@@ -1,0 +1,4 @@
+OpenSeadragonScalebar
+=====================
+
+OpenSeadragon scalebar plugin
