@@ -16,11 +16,9 @@
  */
 (function($) {
 
-    var self = this;
-
     OpenSeadragon.Viewer.prototype.scalebar = function(options) {
-        if (!self.scalebarInstance) {
-            self.scalebarInstance = new $.Scalebar({
+        if (!this.scalebarInstance) {
+            this.scalebarInstance = new $.Scalebar({
                 viewer: this,
                 width: options.width,
                 height: options.height,
@@ -28,7 +26,7 @@
                 color: options.color
             });
         } else {
-            self.scalebarInstance.refresh(options);
+            this.scalebarInstance.refresh(options);
         }
     };
 
