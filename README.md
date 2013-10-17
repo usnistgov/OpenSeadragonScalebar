@@ -1,14 +1,16 @@
 This OpenSeadragon ( http://openseadragon.github.io/ ) plugin provides 
 a scale bar which adjusts depending on the zoom level.
 
+A demo is available here: http://nistdeepzoom.github.io/OpenSeadragonScalebar/
+
 It can be used like this:
 `````javascript
 var viewer = new OpenSeadragon.Viewer(...);
 viewer.scalebar({
-  width: ...,
-  height: ...,
+  minWidth: ...,
   pixelsPerMeter: ...,
-  color: ...
+  color: ...,
+  ...
 });
 `````
 
@@ -21,7 +23,8 @@ viewer.scalebar({
 });
 `````
 
-If width, height or pixelsPerMeter are not set (or set to 0), the bar is hidden.
+The list of all the options can be found and tested on http://nistdeepzoom.github.io/OpenSeadragonScalebar/
+If type, pixelsPerMeter or location are not set (or set to 0), the bar is hidden.
 
 
 Disclaimer:
