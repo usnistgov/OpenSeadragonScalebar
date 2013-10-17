@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+
+<!--
+This software was developed at the National Institute of Standards and
+Technology by employees of the Federal Government in the course of
+their official duties. Pursuant to title 17 Section 105 of the United
+States Code this software is not subject to copyright protection and is
+in the public domain. This software is an experimental system. NIST assumes
+no responsibility whatsoever for its use by other parties, and makes no
+guarantees, expressed or implied, about its quality, reliability, or
+any other characteristic. We would appreciate acknowledgement if the
+software is used.
+-->
+
+<html>
+    <head>
+        <meta charset='utf-8'>
+
+        <title>OpenSeadragon Scalebar</title>
+
+        <link rel='stylesheet' 
+              type='text/css'
+              media='screen'
+              href='css/style.css'/>
+
+        <script src="openseadragon/openseadragon.min.js"></script>
+        <script src="openseadragon/openseadragon-scalebar.js"></script>
+    </head>
+
+    <body>
+        <h1>OpenSeadragon Scalebar example</h1>
+
+        <div id="example-inline-configuration-for-osm" 
+             class="openseadragon">
+        </div>
+        <form>
+            <div>
+                <label for="type">type: </label>
+                <select id="type" onchange="updateList('type');">
+                    <option value="NONE">None</option>
+                    <option value="MICROSCOPY">Microscopy</option>
+                    <option value="MAP" selected>Map</option>
+                </select>
+                <img src="img/help.png" title="Default: microscopy" alt="help" />
+            </div>
+            <div>
+                <label for="pixelsPerMeter">pixelsPerMeter: </label>
+                <input type="text" id="pixelsPerMeter" value="3.356"
+                       onblur="updateNumber('pixelsPerMeter');" />
+                <img src="img/help.png" title="float number, default: 0 (hide bar)" alt="help" />
+            </div>
+            <div>
+                <label for="minWidth">minWidth: </label>
+                <input type="text" id="minWidth" value="75px"
+                       onblur="updateText('minWidth');"  />
+                <img src="img/help.png" title="CSS width: 150px, 10em..., default: 150px" alt="help" />
+            </div>
+            <div>
+                <label for="location">location: </label>
+                <select id="location" onchange="updateList('location');">
+                    <option value="NONE">None</option>
+                    <option value="TOP_LEFT">Top left</option>
+                    <option value="TOP_RIGHT">Top right</option>
+                    <option value="BOTTOM_RIGHT">Bottom right</option>
+                    <option value="BOTTOM_LEFT" selected>Bottom left</option>
+                </select>
+                <img src="img/help.png" title="Default: Bottom left" alt="help" />
+            </div>
+            <div>
+                <label for="xOffset">xOffset: </label>
+                <input type="number" min="0" step="1" id="xOffset" value="5"
+                       onblur="updateNumber('xOffset');"
+                       onchange="updateNumber('xOffset');"/>
+                <img src="img/help.png" title="Default: 5" alt="help" />
+            </div>
+            <div>
+                <label for="yOffset">yOffset: </label>
+                <input type="number" min="0" step="1" id="yOffset" value="10"
+                       onblur="updateNumber('yOffset');"
+                       onchange="updateNumber('yOffset');"/>
+                <img src="img/help.png" title="Default: 10" alt="help" />
+            </div>
+            <div>
+                <label for="stayInsideImage">stayInsideImage: </label>
+                <input type="checkbox" id="stayInsideImage" checked
+                       onchange="updateCheckbox('stayInsideImage');"/>
+                <img src="img/help.png" title="Default: true" alt="help" />
+            </div>
+            <div>
+                <label for="color">color: </label>
+                <input type="text" id="color" value="rgb(150, 150, 150)"
+                       onblur="updateText('color');"/>
+                <img src="img/help.png" title="CSS color such as black (default) or #000000 
+Enable transparency with rgba(0, 0, 0, 0.5)" alt="help" />
+            </div>
+            <div>
+                <label for="fontColor">fontColor: </label>
+                <input type="text" id="fontColor" value="rgb(100, 100, 100)"
+                       onblur="updateText('fontColor');"/>
+                <img src="img/help.png" title="CSS color such as black (default) or #000000 
+Enable transparency with rgba(0, 0, 0, 0.5)" alt="help" />
+            </div>
+            <div>
+                <label for="backgroundColor">backgroundColor: </label>
+                <input type="text" id="backgroundColor" value="rgba(255, 255, 255, 0.5)"
+                       onblur="updateText('backgroundColor');"/>
+                <img src="img/help.png" title="CSS color such as black or #000000 
+Enable transparency with rgba(0, 0, 0, 0.5).
+Default: not set." alt="help" />
+            </div>
+            <div>
+                <label for="fontSize">fontSize: </label>
+                <input type="text" id="fontSize" value="small"
+                       onblur="updateText('fontSize');"/>
+                <img src="img/help.png" title="CSS font size: 10px, 1cm, small... Default: not set." alt="help" />
+            </div>
+            <div>
+                <label for="barThickness">barThickness: </label>
+                <input type="number" id="barThickness" value="2"
+                       onblur="updateNumber('barThickness');"
+                       onchange="updateNumber('barThickness');"/>
+                <img src="img/help.png" title="Default: 2" alt="help" />
+            </div>
+        </form>
+        <script type="text/javascript">
+            var viewer = new OpenSeadragon.Viewer({
+                id: "example-inline-configuration-for-osm",
+                prefixUrl: "openseadragon/images/",
+                showNavigator: false,
+                wrapHorizontal: false,
+                wrapVertical: false,
+                zoomPerScroll: 1.2,
+                minZoomImageRatio: 0.5,
+                tileSources: [{
+                        type: 'openstreetmaps'
+                    }]
+            });
+            viewer.scalebar({
+                type: OpenSeadragon.ScalebarType.MAP,
+                pixelsPerMeter: 3.356,
+                minWidth: "75px",
+                location: OpenSeadragon.ScalebarLocation.BOTTOM_LEFT,
+                xOffset: 5,
+                yOffset: 10,
+                stayInsideImage: true,
+                color: "rgb(150, 150, 150)",
+                fontColor: "rgb(100, 100, 100)",
+                backgroundColor: "rgba(255, 255, 255, 0.5)",
+                fontSize: "small",
+                barThickness: 2
+            });
+            
+            function updateText(property) {
+                var value = document.getElementById(property).value;
+                var options = {};
+                options[property] = value;
+                viewer.scalebar(options);
+            }
+            
+            function updateNumber(property) {
+                var value = document.getElementById(property).value;
+                var options = {};
+                options[property] = parseFloat(value);
+                viewer.scalebar(options);
+            }
+            
+            function updateCheckbox(property) {
+                var value = document.getElementById(property).checked;
+                var options = {};
+                options[property] = value;
+                viewer.scalebar(options);
+            }
+            
+            function updateList(property) {
+                var selected = document.getElementById(property).selectedIndex;
+                var options = {};
+                options[property] = selected;
+                viewer.scalebar(options);
+            }
+        </script>
+
+    </body>
+</html>
+
