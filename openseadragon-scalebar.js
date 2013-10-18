@@ -103,9 +103,10 @@
         this.barThickness = options.barThickness || 2;
         this.pixelsPerMeter = options.pixelsPerMeter || null;
         this.location = options.location || $.ScalebarLocation.BOTTOM_LEFT;
-        this.xOffset = options.xOffset || 0;
-        this.yOffset = options.yOffset || 0;
-        this.stayInsideImage = options.stayInsideImage;
+        this.xOffset = options.xOffset || 5;
+        this.yOffset = options.yOffset || 5;
+        this.stayInsideImage = isDefined(options.stayInsideImage) ?
+                options.stayInsideImage : true;
 
         var self = this;
         this.viewer.addHandler("open", function() {
@@ -390,7 +391,7 @@
     }
 
     function isDefined(variable) {
-        return typeof(variable) !== "undefined";
+        return typeof (variable) !== "undefined";
     }
 
     // For debugging purpose only
