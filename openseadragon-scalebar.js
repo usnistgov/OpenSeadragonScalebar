@@ -171,6 +171,8 @@
         },
         setMinWidth: function(minWidth) {
             this.divElt.style.width = minWidth;
+            // Make sure to display the element before getting is width
+            this.divElt.style.display = "";
             this.minWidth = this.divElt.offsetWidth;
         },
         /**
