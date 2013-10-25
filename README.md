@@ -38,3 +38,5 @@ no responsibility whatsoever for its use by other parties, and makes no
 guarantees, expressed or implied, about its quality, reliability, or
 any other characteristic. We would appreciate acknowledgement if the
 software is used.
+
+[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/d88cd6c96d35f934cde718826296abca "githalytics.com")](http://githalytics.com/NISTDeepZoom/OpenSeadragonScalebar)
