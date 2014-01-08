@@ -22,6 +22,7 @@
 
     $.Viewer.prototype.scalebar = function(options) {
         if (!this.scalebarInstance) {
+            options = options || {};
             options.viewer = this;
             this.scalebarInstance = new $.Scalebar(options);
         } else {
