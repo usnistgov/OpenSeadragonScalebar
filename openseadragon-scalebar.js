@@ -16,23 +16,14 @@
  */
 (function($) {
 
+    if (!$.version || $.version.major < 1) {
+        throw new Error('OpenSeadragonScalebar requires OpenSeadragon version 1.0.0+');
+    }
+
     $.Viewer.prototype.scalebar = function(options) {
         if (!this.scalebarInstance) {
-            this.scalebarInstance = new $.Scalebar({
-                viewer: this,
-                type: options.type,
-                minWidth: options.minWidth,
-                location: options.location,
-                xOffset: options.xOffset,
-                yOffset: options.yOffset,
-                pixelsPerMeter: options.pixelsPerMeter,
-                stayInsideImage: options.stayInsideImage,
-                color: options.color,
-                fontColor: options.fontColor,
-                backgroundColor: options.backgroundColor,
-                fontSize: options.fontSize,
-                barThickness: options.barThickness
-            });
+            options.viewer = this;
+            this.scalebarInstance = new $.Scalebar(options);
         } else {
             this.scalebarInstance.refresh(options);
         }
