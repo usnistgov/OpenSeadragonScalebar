@@ -16,23 +16,15 @@
  */
 (function($) {
 
+    if (!$.version || $.version.major < 1) {
+        throw new Error('OpenSeadragonScalebar requires OpenSeadragon version 1.0.0+');
+    }
+
     $.Viewer.prototype.scalebar = function(options) {
         if (!this.scalebarInstance) {
-            this.scalebarInstance = new $.Scalebar({
-                viewer: this,
-                type: options.type,
-                minWidth: options.minWidth,
-                location: options.location,
-                xOffset: options.xOffset,
-                yOffset: options.yOffset,
-                pixelsPerMeter: options.pixelsPerMeter,
-                stayInsideImage: options.stayInsideImage,
-                color: options.color,
-                fontColor: options.fontColor,
-                backgroundColor: options.backgroundColor,
-                fontSize: options.fontSize,
-                barThickness: options.barThickness
-            });
+            options = options || {};
+            options.viewer = this;
+            this.scalebarInstance = new $.Scalebar(options);
         } else {
             this.scalebarInstance.refresh(options);
         }
@@ -103,9 +95,10 @@
         this.barThickness = options.barThickness || 2;
         this.pixelsPerMeter = options.pixelsPerMeter || null;
         this.location = options.location || $.ScalebarLocation.BOTTOM_LEFT;
-        this.xOffset = options.xOffset || 0;
-        this.yOffset = options.yOffset || 0;
-        this.stayInsideImage = options.stayInsideImage;
+        this.xOffset = options.xOffset || 5;
+        this.yOffset = options.yOffset || 5;
+        this.stayInsideImage = isDefined(options.stayInsideImage) ?
+                options.stayInsideImage : true;
 
         var self = this;
         this.viewer.addHandler("open", function() {
@@ -392,7 +385,7 @@
     }
 
     function isDefined(variable) {
-        return typeof(variable) !== "undefined";
+        return typeof (variable) !== "undefined";
     }
 
     // For debugging purpose only
