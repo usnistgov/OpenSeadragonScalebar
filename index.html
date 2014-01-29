@@ -44,6 +44,14 @@ software is used.
                 <img src="img/help.png" title="Default: microscopy" alt="help" />
             </div>
             <div>
+                <label for="unitSystem">Unit system: </label>
+                <select id="unitSystem" onchange="updateUnitSystem();">
+                    <option value="METRIC">Metric</option>
+                    <option value="IMPERIAL">Imperial</option>
+                </select>
+                <img src="img/help.png" title="Default: metric" alt="help" />
+            </div>
+            <div>
                 <label for="pixelsPerMeter">pixelsPerMeter: </label>
                 <input type="text" id="pixelsPerMeter" value="3.356"
                        onblur="updateNumber('pixelsPerMeter');" />
@@ -176,6 +184,15 @@ Default: not set." alt="help" />
                 var options = {};
                 options[property] = selected;
                 viewer.scalebar(options);
+            }
+
+            function updateUnitSystem() {
+		var selected = document.getElementById("unitSystem").selectedIndex;
+		var options = {};
+		options.sizeAndTextRenderer = selected === 0 ?
+		    OpenSeadragon.ScalebarSizeAndTextRenderer.METRIC_LENGTH :
+		    OpenSeadragon.ScalebarSizeAndTextRenderer.IMPERIAL_LENGTH;
+		viewer.scalebar(options);
             }
         </script>
         

@@ -72,6 +72,12 @@
      * @param {String} options.fontSize The font size. default: not set
      * @param {String} options.barThickness The thickness of the scale bar in px.
      * default: 2
+     * @param {function} options.sizeAndTextRenderer A function which will be
+     * called to determine the size of the scale bar and it's text content.
+     * The function must have 2 parameters: the PPM at the current zoom level
+     * and the minimum size of the scale bar. It must return an object containing
+     * 2 attributes: size and text containing the size of the scale bar and the text.
+     * default: $.ScalebarSizeAndTextRenderer.METRIC_LENGTH
      */
     $.Scalebar = function(options) {
         options = options || {};
@@ -99,6 +105,8 @@
         this.yOffset = options.yOffset || 5;
         this.stayInsideImage = isDefined(options.stayInsideImage) ?
                 options.stayInsideImage : true;
+        this.sizeAndTextRenderer = options.sizeAndTextRenderer ||
+                $.ScalebarSizeAndTextRenderer.METRIC_LENGTH;
 
         var self = this;
         this.viewer.addHandler("open", function() {
@@ -150,6 +158,9 @@
             if (isDefined(options.stayInsideImage)) {
                 this.stayInsideImage = options.stayInsideImage;
             }
+            if (isDefined(options.sizeAndTextRenderer)) {
+                this.sizeAndTextRenderer = options.sizeAndTextRenderer;
+            }
         },
         setDrawScalebarFunction: function(type) {
             if (!type) {
@@ -192,6 +203,12 @@
          * @param {String} options.fontSize The font size. default: not set
          * @param {String} options.barThickness The thickness of the scale bar in px.
          * default: 2
+         * @param {function} options.sizeAndTextRenderer A function which will be
+         * called to determine the size of the scale bar and it's text content.
+         * The function must have 2 parameters: the PPM at the current zoom level
+         * and the minimum size of the scale bar. It must return an object containing
+         * 2 attributes: size and text containing the size of the scale bar and the text.
+         * default: $.ScalebarSizeAndTextRenderer.METRIC_LENGTH
          */
         refresh: function(options) {
             this.updateOptions(options);
@@ -205,39 +222,34 @@
             }
             this.divElt.style.display = "";
 
-            var zoom = this.getZoomLevel();
+            var viewport = this.viewer.viewport;
+            var zoom = viewport.viewportToImageZoom(viewport.getZoom(true));
             var currentPPM = zoom * this.pixelsPerMeter;
-            var value = normalize(currentPPM, this.minWidth);
-            var factor = roundSignificand(value / currentPPM * this.minWidth, 3);
-            var size = value * this.minWidth;
+            var props = this.sizeAndTextRenderer(currentPPM, this.minWidth);
 
-            var valueWithUnit = getWithUnit(factor);
-
-//            sanityCheck(currentPPM, size, factor, this.minSize);
-
-            this.drawScalebar(size, valueWithUnit);
+            this.drawScalebar(props.size, props.text);
             var location = this.getScalebarLocation();
             this.divElt.style.left = location.x + "px";
             this.divElt.style.top = location.y + "px";
         },
-        drawMicroscopyScalebar: function(size, valueWithUnit) {
+        drawMicroscopyScalebar: function(size, text) {
             this.divElt.style.fontSize = this.fontSize;
             this.divElt.style.textAlign = "center";
             this.divElt.style.color = this.fontColor;
             this.divElt.style.border = "none";
             this.divElt.style.borderBottom = this.barThickness + "px solid " + this.color;
             this.divElt.style.backgroundColor = this.backgroundColor;
-            this.divElt.innerHTML = valueWithUnit;
+            this.divElt.innerHTML = text;
             this.divElt.style.width = size + "px";
         },
-        drawMapScalebar: function(size, valueWithUnit) {
+        drawMapScalebar: function(size, text) {
             this.divElt.style.fontSize = this.fontSize;
             this.divElt.style.textAlign = "center";
             this.divElt.style.color = this.fontColor;
             this.divElt.style.border = this.barThickness + "px solid " + this.color;
             this.divElt.style.borderTop = "none";
             this.divElt.style.backgroundColor = this.backgroundColor;
-            this.divElt.innerHTML = valueWithUnit;
+            this.divElt.innerHTML = text;
             this.divElt.style.width = size + "px";
         },
         /**
@@ -314,24 +326,91 @@
                 }
                 return new $.Point(x + this.xOffset, y - this.yOffset);
             }
-        },
-        /**
-         * The zoom level here is different from the zoom value of a seadragon 
-         * viewport.
-         * The zoom of a seadragon viewport is the ratio between the container
-         * size and the viewport size.
-         * This zoom level is the ratio between the size of the entire image
-         * at current zoom and the entire image at the deepest zoom level.
-         */
-        getZoomLevel: function() {
-            var imageWidth = this.viewer.source.dimensions.x;
-            var containerWidth = this.viewer.viewport.getContainerSize().x;
-            var zoomToZoomLevelRatio = containerWidth / imageWidth;
-            return this.viewer.viewport.getZoom(true) * zoomToZoomLevelRatio;
         }
-
     };
 
+    $.ScalebarSizeAndTextRenderer = {
+        /**
+         * Metric length. From nano meters to kilometers.
+         */
+        METRIC_LENGTH: function(ppm, minSize) {
+            return getScalebarSizeAndTextForMetric(ppm, minSize, "m");
+        },
+        /**
+         * Imperial length. Choosing the best unit from thou, inch, foot and mile.
+         */
+        IMPERIAL_LENGTH: function(ppm, minSize) {
+            var maxSize = minSize * 2;
+            var ppi = ppm * 0.0254;
+            if (maxSize < ppi * 12) {
+                if (maxSize < ppi) {
+                    var ppt = ppi / 1000;
+                    return getScalebarSizeAndText(ppt, minSize, "th");
+                }
+                return getScalebarSizeAndText(ppi, minSize, "in");
+            }
+            var ppf = ppi * 12;
+            if (maxSize < ppf * 2000) {
+                return getScalebarSizeAndText(ppf, minSize, "ft");
+            }
+            var ppmi = ppf * 5280;
+            return getScalebarSizeAndText(ppmi, minSize, "mi");
+        },
+        /**
+         * Standard time. Choosing the best unit from second (and metric divisions),
+         * minute, hour, day and year.
+         */
+        STANDARD_TIME: function(pps, minSize) {
+            var maxSize = minSize * 2;
+            if (maxSize < pps * 60) {
+                return getScalebarSizeAndTextForMetric(pps, minSize, "s");
+            }
+            var ppminutes = pps * 60;
+            if (maxSize < ppminutes * 60) {
+                return getScalebarSizeAndText(ppminutes, minSize, "minute");
+            }
+            var pph = ppminutes * 60;
+            if (maxSize < pph * 24) {
+                return getScalebarSizeAndText(pph, minSize, "hour");
+            }
+            var ppd = pph * 24;
+            if (maxSize < ppd * 365.25) {
+                return getScalebarSizeAndText(ppd, minSize, "day");
+            }
+            var ppy = ppd * 365.25;
+            return getScalebarSizeAndText(ppy, minSize, "year");
+        },
+        /**
+         * Generic metric unit. One can use this function to create a new metric
+         * scale. For example, here is an implementation of energy levels:
+         * function(ppeV, minSize) {
+         *   return OpenSeadragon.ScalebarSizeAndTextRenderer.METRIC_GENERIC(
+         *           ppeV, minSize, "eV");
+         * }
+         */
+        METRIC_GENERIC: getScalebarSizeAndTextForMetric
+    };
+
+    function getScalebarSizeAndText(ppm, minSize, unitSuffix) {
+        var value = normalize(ppm, minSize);
+        var factor = roundSignificand(value / ppm * minSize, 3);
+        var size = value * minSize;
+        return {
+            size: size,
+            text: factor + " " + unitSuffix
+        };
+    }
+
+    function getScalebarSizeAndTextForMetric(ppm, minSize, unitSuffix) {
+        var value = normalize(ppm, minSize);
+        var factor = roundSignificand(value / ppm * minSize, 3);
+        var size = value * minSize;
+        var valueWithUnit = getWithUnit(factor, unitSuffix);
+        return {
+            size: size,
+            text: valueWithUnit
+        };
+    }
 
     function normalize(value, minSize) {
         var significand = getSignificand(value);
@@ -368,37 +447,23 @@
         return Math.log(x) / Math.log(10);
     }
 
-    function getWithUnit(value) {
+    function getWithUnit(value, unitSuffix) {
         if (value < 0.000001) {
-            return value * 100000000 + " nm";
+            return value * 100000000 + " n" + unitSuffix;
         }
         if (value < 0.001) {
-            return value * 1000000 + " μm";
+            return value * 1000000 + " μ" + unitSuffix;
         }
         if (value < 1) {
-            return value * 1000 + " mm";
+            return value * 1000 + " m" + unitSuffix;
         }
         if (value >= 1000) {
-            return value / 1000 + " km";
+            return value / 1000 + " k" + unitSuffix;
         }
-        return value + " m";
+        return value + " " + unitSuffix;
     }
 
     function isDefined(variable) {
         return typeof (variable) !== "undefined";
-    }
-
-    // For debugging purpose only
-    function sanityCheck(currentPPM, barSize, factor, minSize) {
-        var ppm = barSize / factor;
-        if (Math.abs(ppm - currentPPM) > 0.0001) {
-            console.log("PPM difference: Expected: " + currentPPM + " Got: " + ppm);
-        }
-        if (barSize > minSize * 2) {
-            console.log("Bar size above limit: " + barSize);
-        }
-        if (barSize < minSize) {
-            console.log("Bar size under limit: " + barSize);
-        }
     }
 }(OpenSeadragon));
