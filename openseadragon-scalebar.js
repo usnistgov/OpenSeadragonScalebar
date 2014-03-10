@@ -115,6 +115,9 @@
         this.viewer.addHandler("animation", function() {
             self.refresh();
         });
+        this.viewer.addHandler("resize", function() {
+            self.refresh();
+        });
     };
 
     $.Scalebar.prototype = {
