@@ -115,6 +115,9 @@
         this.viewer.addHandler("animation", function() {
             self.refresh();
         });
+        this.viewer.addHandler("resize", function() {
+            self.refresh();
+        });
     };
 
     $.Scalebar.prototype = {
@@ -363,22 +366,22 @@
         STANDARD_TIME: function(pps, minSize) {
             var maxSize = minSize * 2;
             if (maxSize < pps * 60) {
-                return getScalebarSizeAndTextForMetric(pps, minSize, "s");
+                return getScalebarSizeAndTextForMetric(pps, minSize, "s", false);
             }
             var ppminutes = pps * 60;
             if (maxSize < ppminutes * 60) {
-                return getScalebarSizeAndText(ppminutes, minSize, "minute");
+                return getScalebarSizeAndText(ppminutes, minSize, "minute", true);
             }
             var pph = ppminutes * 60;
             if (maxSize < pph * 24) {
-                return getScalebarSizeAndText(pph, minSize, "hour");
+                return getScalebarSizeAndText(pph, minSize, "hour", true);
             }
             var ppd = pph * 24;
             if (maxSize < ppd * 365.25) {
-                return getScalebarSizeAndText(ppd, minSize, "day");
+                return getScalebarSizeAndText(ppd, minSize, "day", true);
             }
             var ppy = ppd * 365.25;
-            return getScalebarSizeAndText(ppy, minSize, "year");
+            return getScalebarSizeAndText(ppy, minSize, "year", true);
         },
         /**
          * Generic metric unit. One can use this function to create a new metric
@@ -391,13 +394,14 @@
         METRIC_GENERIC: getScalebarSizeAndTextForMetric
     };
 
-    function getScalebarSizeAndText(ppm, minSize, unitSuffix) {
+    function getScalebarSizeAndText(ppm, minSize, unitSuffix, handlePlural) {
         var value = normalize(ppm, minSize);
         var factor = roundSignificand(value / ppm * minSize, 3);
         var size = value * minSize;
+        var plural = handlePlural && factor > 1 ? "s" : "";
         return {
             size: size,
-            text: factor + " " + unitSuffix
+            text: factor + " " + unitSuffix + plural
         };
     }
 
