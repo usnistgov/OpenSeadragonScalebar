@@ -453,7 +453,7 @@
 
     function getWithUnit(value, unitSuffix) {
         if (value < 0.000001) {
-            return value * 100000000 + " n" + unitSuffix;
+            return value * 1000000000 + " n" + unitSuffix;
         }
         if (value < 0.001) {
             return value * 1000000 + " μ" + unitSuffix;
