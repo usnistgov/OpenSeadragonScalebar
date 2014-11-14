@@ -38,3 +38,5 @@ no responsibility whatsoever for its use by other parties, and makes no
 guarantees, expressed or implied, about its quality, reliability, or
 any other characteristic. We would appreciate acknowledgement if the
 software is used.
+
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/NIST-ISG/OpenSeadragonScalebar?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
