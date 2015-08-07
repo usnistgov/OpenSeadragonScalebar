@@ -23,6 +23,16 @@ viewer.scalebar({
 });
 `````
 
+To change the Unit system from the defualt of Metric to Imperial, you must reference the `sizeAndTextRenderer` function in the library directly:
+
+`````javascript
+viewer.scalebar({
+  ...
+  sizeAndTextRenderer: OpenSeadragon.ScalebarSizeAndTextRenderer.IMPERIAL_LENGTH,
+  ...
+});
+`````
+
 The list of all the options can be found and tested on http://nist-isg.github.io/OpenSeadragonScalebar/
 If type, pixelsPerMeter or location are not set (or set to 0), the bar is hidden.
 
