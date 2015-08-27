@@ -23,7 +23,7 @@ viewer.scalebar({
 });
 `````
 
-To change the Unit system from the defualt of Metric to Imperial, you must reference the `sizeAndTextRenderer` function in the library directly:
+To change the unit system from the default of Metric to Imperial, you must reference the `sizeAndTextRenderer` function in the library directly:
 
 `````javascript
 viewer.scalebar({
