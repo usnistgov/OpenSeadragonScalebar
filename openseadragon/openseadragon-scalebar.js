@@ -16,8 +16,9 @@
  */
 (function($) {
 
-    if (!$.version || $.version.major < 1) {
-        throw new Error('OpenSeadragonScalebar requires OpenSeadragon version 1.0.0+');
+    if (!$.version || $.version.major < 2) {
+        throw new Error('This version of OpenSeadragonScalebar requires ' +
+                'OpenSeadragon version 2.0.0+');
     }
 
     $.Viewer.prototype.scalebar = function(options) {
@@ -55,6 +56,9 @@
      * @param {Integer} options.pixelsPerMeter The pixels per meter of the
      * zoomable image at the original image size. If null, the scale bar is not
      * displayed. default: null
+     * @param {Integer} options.referenceItemIdx Specify the item from
+     * viewer.world to which options.pixelsPerMeter is refering.
+     * default: 0
      * @param (String} options.minWidth The minimal width of the scale bar as a
      * CSS string (ex: 100px, 1em, 1% etc...) default: 150px
      * @param {OpenSeadragon.ScalebarLocation} options.location The location
@@ -90,6 +94,7 @@
         this.viewer.container.appendChild(this.divElt);
         this.divElt.style.position = "relative";
         this.divElt.style.margin = "0";
+        this.divElt.style.pointerEvents = "none";
 
         this.setMinWidth(options.minWidth || "150px");
 
@@ -100,6 +105,7 @@
         this.fontSize = options.fontSize || "";
         this.barThickness = options.barThickness || 2;
         this.pixelsPerMeter = options.pixelsPerMeter || null;
+        this.referenceItemIdx = options.referenceItemIdx || 0;
         this.location = options.location || $.ScalebarLocation.BOTTOM_LEFT;
         this.xOffset = options.xOffset || 5;
         this.yOffset = options.yOffset || 5;
@@ -149,6 +155,9 @@
             if (isDefined(options.pixelsPerMeter)) {
                 this.pixelsPerMeter = options.pixelsPerMeter;
             }
+            if (isDefined(options.referenceItemIdx)) {
+                this.referenceItemIdx = options.referenceItemIdx;
+            }
             if (isDefined(options.location)) {
                 this.location = options.location;
             }
@@ -189,6 +198,9 @@
          * @param {Integer} options.pixelsPerMeter The pixels per meter of the
          * zoomable image at the original image size. If null, the scale bar is not
          * displayed. default: null
+         * @param {Integer} options.referenceItemIdx Specify the item from
+         * viewer.world to which options.pixelsPerMeter is refering.
+         * default: 0
          * @param (String} options.minWidth The minimal width of the scale bar as a
          * CSS string (ex: 100px, 1em, 1% etc...) default: 150px
          * @param {OpenSeadragon.ScalebarLocation} options.location The location
@@ -226,7 +238,9 @@
             this.divElt.style.display = "";
 
             var viewport = this.viewer.viewport;
-            var zoom = viewport.viewportToImageZoom(viewport.getZoom(true));
+            var tiledImage = this.viewer.world.getItemAt(this.referenceItemIdx);
+            var zoom = tiledImageViewportToImageZoom(tiledImage,
+                    viewport.getZoom(true));
             var currentPPM = zoom * this.pixelsPerMeter;
             var props = this.sizeAndTextRenderer(currentPPM, this.minWidth);
 
@@ -393,6 +407,14 @@
          */
         METRIC_GENERIC: getScalebarSizeAndTextForMetric
     };
+
+    // Missing TiledImage.viewportToImageZoom function in OSD 2.0.0
+    function tiledImageViewportToImageZoom(tiledImage, viewportZoom) {
+        var ratio = tiledImage._scaleSpring.current.value *
+                tiledImage.viewport._containerInnerSize.x /
+                tiledImage.source.dimensions.x;
+        return ratio * viewportZoom ;
+    }
 
     function getScalebarSizeAndText(ppm, minSize, unitSuffix, handlePlural) {
         var value = normalize(ppm, minSize);
