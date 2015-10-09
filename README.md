@@ -3,6 +3,13 @@ a scale bar which adjusts depending on the zoom level.
 
 A demo is available here: http://nist-isg.github.io/OpenSeadragonScalebar/
 
+For OpenSeadragon 1.x, use the 1.x releases of this plugin.
+For OpenSeadragon 2.x, use the 2.x releases of this plugin.
+
+Note: If you are displaying multiple images in OpenSeadragon 2.x, this plugin
+assumes that the provided pixelsPerMeter is the one of the image at index 0
+in world.getItemAt. You can change that index via the referenceItemIdx option.
+
 It can be used like this:
 `````javascript
 var viewer = new OpenSeadragon.Viewer(...);
@@ -23,7 +30,8 @@ viewer.scalebar({
 });
 `````
 
-To change the unit system from the default of Metric to Imperial, you must reference the `sizeAndTextRenderer` function in the library directly:
+To change the unit system from the default of Metric to Imperial,
+you must reference the `sizeAndTextRenderer` function in the library directly:
 
 `````javascript
 viewer.scalebar({
