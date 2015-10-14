@@ -42,8 +42,14 @@ viewer.scalebar({
 `````
 
 The list of all the options can be found and tested on http://nist-isg.github.io/OpenSeadragonScalebar/
+
 If type, pixelsPerMeter or location are not set (or set to 0), the bar is hidden.
 
+
+The getAsCanvas method let one retrieve the scalebar as a canvas element like this:
+```javascript
+var canvas = viewer.scalebarInstance.getAsCanvas();
+```
 
 Disclaimer:
 
