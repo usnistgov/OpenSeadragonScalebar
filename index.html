@@ -99,22 +99,22 @@ software is used.
                 <input type="text" id="color" value="rgb(150, 150, 150)"
                        onblur="updateText('color');"/>
                 <img src="img/help.png" title="CSS color such as black (default) or #000000 
-Enable transparency with rgba(0, 0, 0, 0.5)" alt="help" />
+                     Enable transparency with rgba(0, 0, 0, 0.5)" alt="help" />
             </div>
             <div>
                 <label for="fontColor">fontColor: </label>
                 <input type="text" id="fontColor" value="rgb(100, 100, 100)"
                        onblur="updateText('fontColor');"/>
                 <img src="img/help.png" title="CSS color such as black (default) or #000000 
-Enable transparency with rgba(0, 0, 0, 0.5)" alt="help" />
+                     Enable transparency with rgba(0, 0, 0, 0.5)" alt="help" />
             </div>
             <div>
                 <label for="backgroundColor">backgroundColor: </label>
                 <input type="text" id="backgroundColor" value="rgba(255, 255, 255, 0.5)"
                        onblur="updateText('backgroundColor');"/>
                 <img src="img/help.png" title="CSS color such as black or #000000 
-Enable transparency with rgba(0, 0, 0, 0.5).
-Default: not set." alt="help" />
+                     Enable transparency with rgba(0, 0, 0, 0.5).
+                     Default: not set." alt="help" />
             </div>
             <div>
                 <label for="fontSize">fontSize: </label>
@@ -128,6 +128,10 @@ Default: not set." alt="help" />
                        onblur="updateNumber('barThickness');"
                        onchange="updateNumber('barThickness');"/>
                 <img src="img/help.png" title="Default: 2" alt="help" />
+            </div>
+            <div>
+                <button type="button" onclick="getAsCanvas()">Get as canvas</button>
+                <span id="canvasContainer"></span>
             </div>
         </form>
         <script type="text/javascript">
@@ -157,28 +161,28 @@ Default: not set." alt="help" />
                 fontSize: "small",
                 barThickness: 2
             });
-            
+
             function updateText(property) {
                 var value = document.getElementById(property).value;
                 var options = {};
                 options[property] = value;
                 viewer.scalebar(options);
             }
-            
+
             function updateNumber(property) {
                 var value = document.getElementById(property).value;
                 var options = {};
                 options[property] = parseFloat(value);
                 viewer.scalebar(options);
             }
-            
+
             function updateCheckbox(property) {
                 var value = document.getElementById(property).checked;
                 var options = {};
                 options[property] = value;
                 viewer.scalebar(options);
             }
-            
+
             function updateList(property) {
                 var selected = document.getElementById(property).selectedIndex;
                 var options = {};
@@ -187,12 +191,21 @@ Default: not set." alt="help" />
             }
 
             function updateUnitSystem() {
-		var selected = document.getElementById("unitSystem").selectedIndex;
-		var options = {};
-		options.sizeAndTextRenderer = selected === 0 ?
-		    OpenSeadragon.ScalebarSizeAndTextRenderer.METRIC_LENGTH :
-		    OpenSeadragon.ScalebarSizeAndTextRenderer.IMPERIAL_LENGTH;
-		viewer.scalebar(options);
+                var selected = document.getElementById("unitSystem").selectedIndex;
+                var options = {};
+                options.sizeAndTextRenderer = selected === 0 ?
+                        OpenSeadragon.ScalebarSizeAndTextRenderer.METRIC_LENGTH :
+                        OpenSeadragon.ScalebarSizeAndTextRenderer.IMPERIAL_LENGTH;
+                viewer.scalebar(options);
+            }
+
+            function getAsCanvas() {
+                var canvasContainer = document.getElementById("canvasContainer");
+                while (canvasContainer.firstChild) {
+                    canvasContainer.removeChild(canvasContainer.firstChild);
+                }
+                var canvas = viewer.scalebarInstance.getAsCanvas();
+                canvasContainer.appendChild(canvas);
             }
         </script>
     </body>

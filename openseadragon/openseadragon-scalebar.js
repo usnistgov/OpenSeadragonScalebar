@@ -343,6 +343,34 @@
                 }
                 return new $.Point(x + this.xOffset, y - this.yOffset);
             }
+        },
+        /**
+         * Get the rendered scalebar in a canvas.
+         * @returns {Element} A canvas containing the scalebar representation
+         */
+        getAsCanvas: function() {
+            var canvas = document.createElement("canvas");
+            canvas.width = this.divElt.offsetWidth;
+            canvas.height = this.divElt.offsetHeight;
+            var context = canvas.getContext("2d");
+            context.fillStyle = this.backgroundColor;
+            context.fillRect(0, 0, canvas.width, canvas.height);
+            context.fillStyle = this.color;
+            context.fillRect(0, canvas.height - this.barThickness,
+                    canvas.width, canvas.height);
+            if (this.drawScalebar === this.drawMapScalebar) {
+                context.fillRect(0, 0, this.barThickness, canvas.height);
+                context.fillRect(canvas.width - this.barThickness, 0,
+                        this.barThickness, canvas.height);
+            }
+            context.font = window.getComputedStyle(this.divElt).font;
+            context.textAlign = "center";
+            context.textBaseline = "middle";
+            context.fillStyle = this.fontColor;
+            var hCenter = canvas.width / 2;
+            var vCenter = canvas.height / 2;
+            context.fillText(this.divElt.textContent, hCenter, vCenter);
+            return canvas;
         }
     };
 
@@ -413,7 +441,7 @@
         var ratio = tiledImage._scaleSpring.current.value *
                 tiledImage.viewport._containerInnerSize.x /
                 tiledImage.source.dimensions.x;
-        return ratio * viewportZoom ;
+        return ratio * viewportZoom;
     }
 
     function getScalebarSizeAndText(ppm, minSize, unitSuffix, handlePlural) {
