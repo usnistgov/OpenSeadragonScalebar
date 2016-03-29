@@ -373,19 +373,19 @@
             return canvas;
         },
         /**
-         * Inject scalebar into a canvas with viewport image.
-         * @returns {Element} A canvas containing the scalebar representation
+         * Get a copy of the current OpenSeadragon canvas with the scalebar.
+         * @returns {Element} A canvas containing a copy of the current OpenSeadragon canvas with the scalebar
          */
-        injectIntoImageCanvas: function() {
+        getImageWithScalebarAsCanvas: function() {
             var imgCanvas = this.viewer.drawer.canvas;
             var newCanvas = document.createElement("canvas");
             newCanvas.width = imgCanvas.width;
             newCanvas.height = imgCanvas.height;
-            var newCtx = newCanvas.getContext('2d');
-            newCtx.drawImage(imgCanvas,0,0);
+            var newCtx = newCanvas.getContext("2d");
+            newCtx.drawImage(imgCanvas, 0, 0);
             var scalebarCanvas = this.getAsCanvas();
             var location = this.getScalebarLocation();
-            newCtx.drawImage(scalebarCanvas,location.x,location.y);
+            newCtx.drawImage(scalebarCanvas, location.x, location.y);
             return newCanvas;
         }
     };
