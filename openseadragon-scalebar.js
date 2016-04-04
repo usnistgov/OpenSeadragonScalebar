@@ -371,6 +371,22 @@
             var vCenter = canvas.height / 2;
             context.fillText(this.divElt.textContent, hCenter, vCenter);
             return canvas;
+        },
+        /**
+         * Get a copy of the current OpenSeadragon canvas with the scalebar.
+         * @returns {Element} A canvas containing a copy of the current OpenSeadragon canvas with the scalebar
+         */
+        getImageWithScalebarAsCanvas: function() {
+            var imgCanvas = this.viewer.drawer.canvas;
+            var newCanvas = document.createElement("canvas");
+            newCanvas.width = imgCanvas.width;
+            newCanvas.height = imgCanvas.height;
+            var newCtx = newCanvas.getContext("2d");
+            newCtx.drawImage(imgCanvas, 0, 0);
+            var scalebarCanvas = this.getAsCanvas();
+            var location = this.getScalebarLocation();
+            newCtx.drawImage(scalebarCanvas, location.x, location.y);
+            return newCanvas;
         }
     };
 
