@@ -1,7 +1,7 @@
 This [OpenSeadragon](http://openseadragon.github.io/) plugin provides 
 a scale bar which adjusts depending on the zoom level.
 
-A demo is available [here](http://nist-isg.github.io/OpenSeadragonScalebar/).
+A demo is available [here](https://pages.nist.gov/OpenSeadragonScalebar/).
 
 For OpenSeadragon 1.x, use the 1.x releases of this plugin.
 For OpenSeadragon 2.x, use the 2.x releases of this plugin.
@@ -41,14 +41,20 @@ viewer.scalebar({
 });
 `````
 
-The list of all the options can be found and tested on the [demo site](http://nist-isg.github.io/OpenSeadragonScalebar/).
+The list of all the options can be found and tested on the [demo site](https://pages.nist.gov/OpenSeadragonScalebar/).
 
 If type, pixelsPerMeter or location are not set (or set to 0), the bar is hidden.
 
 
-The getAsCanvas method let one retrieve the scalebar as a canvas element like this:
+The `getAsCanvas` method let one retrieve the scalebar as a canvas element like this:
 ```javascript
 var canvas = viewer.scalebarInstance.getAsCanvas();
+```
+
+To retrieve the current display of the OpenSeadragon viewer with the scalebar,
+one can use the `getImageWithScalebarAsCanvas` method:
+```javascript
+var canvas = viewer.scalebarInstance.getImageWithScalebarAsCanvas();
 ```
 
 Disclaimer:
@@ -62,5 +68,3 @@ no responsibility whatsoever for its use by other parties, and makes no
 guarantees, expressed or implied, about its quality, reliability, or
 any other characteristic. We would appreciate acknowledgement if the
 software is used.
-
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/NIST-ISG/OpenSeadragonScalebar?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
