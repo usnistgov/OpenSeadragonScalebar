@@ -18,6 +18,10 @@ software is used.
 
         <title>OpenSeadragon Scalebar</title>
 
+        <!-- NIST template CSS -->
+        <link rel="stylesheet" href="static/css/NISTStyle.css">
+        <link rel="stylesheet" href="static/css/NISTPages.css">
+
         <link rel='stylesheet' 
               type='text/css'
               media='screen'
@@ -28,186 +32,228 @@ software is used.
     </head>
 
     <body>
-        <h1>OpenSeadragon Scalebar example</h1>
+        <header class="nist-header">
+            <h1>
+                <a class="nist-logo" target="_blank" href="http://www.nist.gov/" title="Go to nist.gov">National Institute of Standards and Technology</a>
+            </h1>
+            <div class="nist-links">
+                <a class="nist-links-button" target="_blank" href="http://www.nist.gov">NIST Website</a>
+                <a class="nist-links-button mobile-hide" target="_blank" href="http://www.nist.gov/public_affairs/nandyou.cfm">About NIST</a>
+                <a class="nist-links-button mobile-hide" target="_blank" href="https://github.com/usnistgov">usnistgov on Github</a>
+            </div>
+        </header>
 
-        <div id="example-inline-configuration-for-osm" 
-             class="openseadragon">
-        </div>
-        <form>
-            <div>
-                <label for="type">type: </label>
-                <select id="type" onchange="updateList('type');">
-                    <option value="NONE">None</option>
-                    <option value="MICROSCOPY">Microscopy</option>
-                    <option value="MAP" selected>Map</option>
-                </select>
-                <img src="img/help.png" title="Default: microscopy" alt="help" />
-            </div>
-            <div>
-                <label for="unitSystem">Unit system: </label>
-                <select id="unitSystem" onchange="updateUnitSystem();">
-                    <option value="METRIC">Metric</option>
-                    <option value="IMPERIAL">Imperial</option>
-                </select>
-                <img src="img/help.png" title="Default: metric" alt="help" />
-            </div>
-            <div>
-                <label for="pixelsPerMeter">pixelsPerMeter: </label>
-                <input type="text" id="pixelsPerMeter" value="3.356"
-                       onblur="updateNumber('pixelsPerMeter');" />
-                <img src="img/help.png" title="float number, default: 0 (hide bar)" alt="help" />
-            </div>
-            <div>
-                <label for="minWidth">minWidth: </label>
-                <input type="text" id="minWidth" value="75px"
-                       onblur="updateText('minWidth');"  />
-                <img src="img/help.png" title="CSS width: 150px, 10em..., default: 150px" alt="help" />
-            </div>
-            <div>
-                <label for="location">location: </label>
-                <select id="location" onchange="updateList('location');">
-                    <option value="NONE">None</option>
-                    <option value="TOP_LEFT">Top left</option>
-                    <option value="TOP_RIGHT">Top right</option>
-                    <option value="BOTTOM_RIGHT">Bottom right</option>
-                    <option value="BOTTOM_LEFT" selected>Bottom left</option>
-                </select>
-                <img src="img/help.png" title="Default: Bottom left" alt="help" />
-            </div>
-            <div>
-                <label for="xOffset">xOffset: </label>
-                <input type="number" min="0" step="1" id="xOffset" value="5"
-                       onblur="updateNumber('xOffset');"
-                       onchange="updateNumber('xOffset');"/>
-                <img src="img/help.png" title="Default: 5" alt="help" />
-            </div>
-            <div>
-                <label for="yOffset">yOffset: </label>
-                <input type="number" min="0" step="1" id="yOffset" value="10"
-                       onblur="updateNumber('yOffset');"
-                       onchange="updateNumber('yOffset');"/>
-                <img src="img/help.png" title="Default: 10" alt="help" />
-            </div>
-            <div>
-                <label for="stayInsideImage">stayInsideImage: </label>
-                <input type="checkbox" id="stayInsideImage" checked
-                       onchange="updateCheckbox('stayInsideImage');"/>
-                <img src="img/help.png" title="Default: true" alt="help" />
-            </div>
-            <div>
-                <label for="color">color: </label>
-                <input type="text" id="color" value="rgb(150, 150, 150)"
-                       onblur="updateText('color');"/>
-                <img src="img/help.png" title="CSS color such as black (default) or #000000 
-                     Enable transparency with rgba(0, 0, 0, 0.5)" alt="help" />
-            </div>
-            <div>
-                <label for="fontColor">fontColor: </label>
-                <input type="text" id="fontColor" value="rgb(100, 100, 100)"
-                       onblur="updateText('fontColor');"/>
-                <img src="img/help.png" title="CSS color such as black (default) or #000000 
-                     Enable transparency with rgba(0, 0, 0, 0.5)" alt="help" />
-            </div>
-            <div>
-                <label for="backgroundColor">backgroundColor: </label>
-                <input type="text" id="backgroundColor" value="rgba(255, 255, 255, 0.5)"
-                       onblur="updateText('backgroundColor');"/>
-                <img src="img/help.png" title="CSS color such as black or #000000 
-                     Enable transparency with rgba(0, 0, 0, 0.5).
-                     Default: not set." alt="help" />
-            </div>
-            <div>
-                <label for="fontSize">fontSize: </label>
-                <input type="text" id="fontSize" value="small"
-                       onblur="updateText('fontSize');"/>
-                <img src="img/help.png" title="CSS font size: 10px, 1cm, small... Default: not set." alt="help" />
-            </div>
-            <div>
-                <label for="barThickness">barThickness: </label>
-                <input type="number" id="barThickness" value="2"
-                       onblur="updateNumber('barThickness');"
-                       onchange="updateNumber('barThickness');"/>
-                <img src="img/help.png" title="Default: 2" alt="help" />
-            </div>
-            <div>
-                <button type="button" onclick="getAsCanvas()">Get as canvas</button>
-                <span id="canvasContainer"></span>
-            </div>
-        </form>
-        <script type="text/javascript">
-            var viewer = new OpenSeadragon.Viewer({
-                id: "example-inline-configuration-for-osm",
-                prefixUrl: "openseadragon/images/",
-                showNavigator: false,
-                wrapHorizontal: false,
-                wrapVertical: false,
-                zoomPerScroll: 1.2,
-                minZoomImageRatio: 0.5,
-                tileSources: [{
-                        type: 'openstreetmaps'
-                    }]
-            });
-            viewer.scalebar({
-                type: OpenSeadragon.ScalebarType.MAP,
-                pixelsPerMeter: 3.356,
-                minWidth: "75px",
-                location: OpenSeadragon.ScalebarLocation.BOTTOM_LEFT,
-                xOffset: 5,
-                yOffset: 10,
-                stayInsideImage: true,
-                color: "rgb(150, 150, 150)",
-                fontColor: "rgb(100, 100, 100)",
-                backgroundColor: "rgba(255, 255, 255, 0.5)",
-                fontSize: "small",
-                barThickness: 2
-            });
+        <section class="home home-title">
+            <h1>OpenSeadragon Scalebar example</h1>
+        </section>
 
-            function updateText(property) {
-                var value = document.getElementById(property).value;
-                var options = {};
-                options[property] = value;
-                viewer.scalebar(options);
-            }
+        <section class="home-about">
+            <p>
+                Demo of the OpenSeadragon scalebar plugin.
+                Code and documentation are available on
+                <a href="https://github.com/usnistgov/OpenSeadragonScalebar">GitHub</a>.
+            </p>
+            <p>
+                Change the properties of the scalebar to visualize the effects.
+            </p>
+        </section>
 
-            function updateNumber(property) {
-                var value = document.getElementById(property).value;
-                var options = {};
-                options[property] = parseFloat(value);
-                viewer.scalebar(options);
-            }
+        <section class="demo">
+            <div id="example-inline-configuration-for-osm" class="openseadragon">
+            </div>
+            <form>
+                <div>
+                    <label for="type">type: </label>
+                    <select id="type" onchange="updateList('type');">
+                        <option value="NONE">None</option>
+                        <option value="MICROSCOPY">Microscopy</option>
+                        <option value="MAP" selected>Map</option>
+                    </select>
+                    <img src="img/help.png" title="Default: microscopy" alt="help" />
+                </div>
+                <div>
+                    <label for="unitSystem">Unit system: </label>
+                    <select id="unitSystem" onchange="updateUnitSystem();">
+                        <option value="METRIC">Metric</option>
+                        <option value="IMPERIAL">Imperial</option>
+                    </select>
+                    <img src="img/help.png" title="Default: metric" alt="help" />
+                </div>
+                <div>
+                    <label for="pixelsPerMeter">pixelsPerMeter: </label>
+                    <input type="text" id="pixelsPerMeter" value="3.356"
+                           onblur="updateNumber('pixelsPerMeter');" />
+                    <img src="img/help.png" title="float number, default: 0 (hide bar)" alt="help" />
+                </div>
+                <div>
+                    <label for="minWidth">minWidth: </label>
+                    <input type="text" id="minWidth" value="75px"
+                           onblur="updateText('minWidth');"  />
+                    <img src="img/help.png" title="CSS width: 150px, 10em..., default: 150px" alt="help" />
+                </div>
+                <div>
+                    <label for="location">location: </label>
+                    <select id="location" onchange="updateList('location');">
+                        <option value="NONE">None</option>
+                        <option value="TOP_LEFT">Top left</option>
+                        <option value="TOP_RIGHT">Top right</option>
+                        <option value="BOTTOM_RIGHT">Bottom right</option>
+                        <option value="BOTTOM_LEFT" selected>Bottom left</option>
+                    </select>
+                    <img src="img/help.png" title="Default: Bottom left" alt="help" />
+                </div>
+                <div>
+                    <label for="xOffset">xOffset: </label>
+                    <input type="number" min="0" step="1" id="xOffset" value="5"
+                           onblur="updateNumber('xOffset');"
+                           onchange="updateNumber('xOffset');"/>
+                    <img src="img/help.png" title="Default: 5" alt="help" />
+                </div>
+                <div>
+                    <label for="yOffset">yOffset: </label>
+                    <input type="number" min="0" step="1" id="yOffset" value="10"
+                           onblur="updateNumber('yOffset');"
+                           onchange="updateNumber('yOffset');"/>
+                    <img src="img/help.png" title="Default: 10" alt="help" />
+                </div>
+                <div>
+                    <label for="stayInsideImage">stayInsideImage: </label>
+                    <input type="checkbox" id="stayInsideImage" checked
+                           onchange="updateCheckbox('stayInsideImage');"/>
+                    <img src="img/help.png" title="Default: true" alt="help" />
+                </div>
+                <div>
+                    <label for="color">color: </label>
+                    <input type="text" id="color" value="rgb(150, 150, 150)"
+                           onblur="updateText('color');"/>
+                    <img src="img/help.png" title="CSS color such as black (default) or #000000 
+                         Enable transparency with rgba(0, 0, 0, 0.5)" alt="help" />
+                </div>
+                <div>
+                    <label for="fontColor">fontColor: </label>
+                    <input type="text" id="fontColor" value="rgb(100, 100, 100)"
+                           onblur="updateText('fontColor');"/>
+                    <img src="img/help.png" title="CSS color such as black (default) or #000000 
+                         Enable transparency with rgba(0, 0, 0, 0.5)" alt="help" />
+                </div>
+                <div>
+                    <label for="backgroundColor">backgroundColor: </label>
+                    <input type="text" id="backgroundColor" value="rgba(255, 255, 255, 0.5)"
+                           onblur="updateText('backgroundColor');"/>
+                    <img src="img/help.png" title="CSS color such as black or #000000 
+                         Enable transparency with rgba(0, 0, 0, 0.5).
+                         Default: not set." alt="help" />
+                </div>
+                <div>
+                    <label for="fontSize">fontSize: </label>
+                    <input type="text" id="fontSize" value="small"
+                           onblur="updateText('fontSize');"/>
+                    <img src="img/help.png" title="CSS font size: 10px, 1cm, small... Default: not set." alt="help" />
+                </div>
+                <div>
+                    <label for="barThickness">barThickness: </label>
+                    <input type="number" id="barThickness" value="2"
+                           onblur="updateNumber('barThickness');"
+                           onchange="updateNumber('barThickness');"/>
+                    <img src="img/help.png" title="Default: 2" alt="help" />
+                </div>
+                <div>
+                    <button type="button" onclick="getAsCanvas()">Get as canvas</button>
+                    <span id="canvasContainer"></span>
+                </div>
+            </form>
+            <script type="text/javascript">
+                var viewer = new OpenSeadragon.Viewer({
+                    id: "example-inline-configuration-for-osm",
+                    prefixUrl: "openseadragon/images/",
+                    showNavigator: false,
+                    wrapHorizontal: false,
+                    wrapVertical: false,
+                    zoomPerScroll: 1.2,
+                    minZoomImageRatio: 0.5,
+                    tileSources: [{
+                            type: 'openstreetmaps'
+                        }]
+                });
+                viewer.scalebar({
+                    type: OpenSeadragon.ScalebarType.MAP,
+                    pixelsPerMeter: 3.356,
+                    minWidth: "75px",
+                    location: OpenSeadragon.ScalebarLocation.BOTTOM_LEFT,
+                    xOffset: 5,
+                    yOffset: 10,
+                    stayInsideImage: true,
+                    color: "rgb(150, 150, 150)",
+                    fontColor: "rgb(100, 100, 100)",
+                    backgroundColor: "rgba(255, 255, 255, 0.5)",
+                    fontSize: "small",
+                    barThickness: 2
+                });
 
-            function updateCheckbox(property) {
-                var value = document.getElementById(property).checked;
-                var options = {};
-                options[property] = value;
-                viewer.scalebar(options);
-            }
+                function updateText(property) {
+                    var value = document.getElementById(property).value;
+                    var options = {};
+                    options[property] = value;
+                    viewer.scalebar(options);
+                }
 
-            function updateList(property) {
-                var selected = document.getElementById(property).selectedIndex;
-                var options = {};
-                options[property] = selected;
-                viewer.scalebar(options);
-            }
+                function updateNumber(property) {
+                    var value = document.getElementById(property).value;
+                    var options = {};
+                    options[property] = parseFloat(value);
+                    viewer.scalebar(options);
+                }
 
-            function updateUnitSystem() {
-                var selected = document.getElementById("unitSystem").selectedIndex;
-                var options = {};
-                options.sizeAndTextRenderer = selected === 0 ?
+                function updateCheckbox(property) {
+                    var value = document.getElementById(property).checked;
+                    var options = {};
+                    options[property] = value;
+                    viewer.scalebar(options);
+                }
+
+                function updateList(property) {
+                    var selected = document.getElementById(property).selectedIndex;
+                    var options = {};
+                    options[property] = selected;
+                    viewer.scalebar(options);
+                }
+
+                function updateUnitSystem() {
+                    var selected = document.getElementById("unitSystem").selectedIndex;
+                    var options = {};
+                    options.sizeAndTextRenderer = selected === 0 ?
                         OpenSeadragon.ScalebarSizeAndTextRenderer.METRIC_LENGTH :
                         OpenSeadragon.ScalebarSizeAndTextRenderer.IMPERIAL_LENGTH;
-                viewer.scalebar(options);
-            }
-
-            function getAsCanvas() {
-                var canvasContainer = document.getElementById("canvasContainer");
-                while (canvasContainer.firstChild) {
-                    canvasContainer.removeChild(canvasContainer.firstChild);
+                    viewer.scalebar(options);
                 }
-                var canvas = viewer.scalebarInstance.getAsCanvas();
-                canvasContainer.appendChild(canvas);
-            }
-        </script>
+
+                function getAsCanvas() {
+                    var canvasContainer = document.getElementById("canvasContainer");
+                    while (canvasContainer.firstChild) {
+                        canvasContainer.removeChild(canvasContainer.firstChild);
+                    }
+                    var canvas = viewer.scalebarInstance.getAsCanvas();
+                    canvasContainer.appendChild(canvas);
+                }
+            </script>
+        </section>
+        <footer class="site-footer">
+            <div class="section-container">
+                <div class="section-content">
+                </div>
+            </div>
+        </footer>
+
+        <hr>
+        <section class="footer">
+            <a target="_blank" href="http://www.nist.gov/public_affairs/privacy.cfm#privpolicy">Privacy Policy</a>
+            |
+            <a target="_blank" href="http://www.nist.gov/public_affairs/privacy.cfm#secnot">Security Notice</a>
+            |
+            <a href="http://www.nist.gov/public_affairs/privacy.cfm#accesstate">Accessibility Statement</a>
+            |
+            <a target="_blank" href="mailto:peter.bajcsy@nist.gov?subject=Feedback%20on%20OpenSeadragonScalebar%20demo">Send feedback</a>
+            | Last updated: April 12, 2016
+        </section>
     </body>
 </html>
-

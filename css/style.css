@@ -10,6 +10,10 @@
  * software is used.
  */
 
+.demo {
+    line-height: normal;
+}
+
 .openseadragon {
   float: left;
   width: 500px;
@@ -17,7 +21,7 @@
   border: 1px solid black;
   background-color: black;
   font-family: arial;
-  margin: 0.5em;
+  margin-right: 0.5em;
 }
 
 form div {
