@@ -57,6 +57,15 @@ one can use the `getImageWithScalebarAsCanvas` method:
 var canvas = viewer.scalebarInstance.getImageWithScalebarAsCanvas();
 ```
 
+Since it is [difficult to define the anchor point](https://github.com/usnistgov/OpenSeadragonScalebar/issues/2) upon rotation. It is recommended to disable `stayInsideImage` if rotation is supported:
+`````javascript
+viewer.scalebar({
+  ...
+  stayInsideImage: false,
+  ...
+});
+`````
+
 Disclaimer:
 
 This software was developed at the National Institute of Standards and
