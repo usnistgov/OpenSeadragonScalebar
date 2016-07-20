@@ -4,7 +4,8 @@ a scale bar which adjusts depending on the zoom level.
 A demo is available [here](https://pages.nist.gov/OpenSeadragonScalebar/).
 
 For OpenSeadragon 1.x, use the 1.x releases of this plugin.
-For OpenSeadragon 2.x, use the 2.x releases of this plugin.
+
+For OpenSeadragon 2.x, use the master branch of this plugin.
 
 Note: If you are displaying multiple images in OpenSeadragon 2.x, this plugin
 assumes that the provided pixelsPerMeter is the one of the image at index 0
