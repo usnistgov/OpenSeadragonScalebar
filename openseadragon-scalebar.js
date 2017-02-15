@@ -418,6 +418,21 @@
             return getScalebarSizeAndText(ppmi, minSize, "mi");
         },
         /**
+         * Astronomy units. Choosing the best unit from arcsec, arcminute, and degree
+         */
+        ASTRONOMY: function(ppa, minSize) {
+	    var maxSize = minSize * 2;
+            if (maxSize < ppa * 60) {
+                return getScalebarSizeAndText(ppa, minSize, "\"", false, '');
+            }
+            var ppminutes = ppa * 60;
+            if (maxSize < ppminutes * 60) {
+                return getScalebarSizeAndText(ppminutes, minSize, "\'", false, '');
+            }
+            var ppd = ppminutes * 60;
+            return getScalebarSizeAndText(ppd, minSize, "&#176", false, '');
+	    },
+        /**
          * Standard time. Choosing the best unit from second (and metric divisions),
          * minute, hour, day and year.
          */
@@ -460,14 +475,14 @@
         return ratio * viewportZoom;
     }
 
-    function getScalebarSizeAndText(ppm, minSize, unitSuffix, handlePlural) {
+    function getScalebarSizeAndText(ppm, minSize, unitSuffix, handlePlural, spacer = ' ') {
         var value = normalize(ppm, minSize);
         var factor = roundSignificand(value / ppm * minSize, 3);
         var size = value * minSize;
         var plural = handlePlural && factor > 1 ? "s" : "";
         return {
             size: size,
-            text: factor + " " + unitSuffix + plural
+            text: factor + spacer + unitSuffix + plural
         };
     }
 
