@@ -431,7 +431,7 @@
             }
             var ppd = ppminutes * 60;
             return getScalebarSizeAndText(ppd, minSize, "&#176", false, '');
-	    },
+	},
         /**
          * Standard time. Choosing the best unit from second (and metric divisions),
          * minute, hour, day and year.
@@ -475,7 +475,8 @@
         return ratio * viewportZoom;
     }
 
-    function getScalebarSizeAndText(ppm, minSize, unitSuffix, handlePlural, spacer = ' ') {
+    function getScalebarSizeAndText(ppm, minSize, unitSuffix, handlePlural, spacer) {
+	spacer = spacer === undefined ? ' ' : spacer;
         var value = normalize(ppm, minSize);
         var factor = roundSignificand(value / ppm * minSize, 3);
         var size = value * minSize;
