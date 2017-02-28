@@ -42,6 +42,17 @@ viewer.scalebar({
 });
 `````
 
+To change the unit system from the default of Metric to Astronomical,
+you must reference the `sizeAndTextRenderer` function in the library directly:
+
+`````javascript
+viewer.scalebar({
+  ...
+  sizeAndTextRenderer: OpenSeadragon.ScalebarSizeAndTextRenderer.ASTRONOMY,
+  ...
+});
+`````
+
 The list of all the options can be found and tested on the [demo site](https://pages.nist.gov/OpenSeadragonScalebar/).
 
 If type, pixelsPerMeter or location are not set (or set to 0), the bar is hidden.
