@@ -74,6 +74,7 @@
      * @param {String} options.fontColor The font color. default: black
      * @param {String} options.backgroundColor The background color. default: none
      * @param {String} options.fontSize The font size. default: not set
+     * @param {String} options.fontFamily The font-family. default: not set
      * @param {String} options.barThickness The thickness of the scale bar in px.
      * default: 2
      * @param {function} options.sizeAndTextRenderer A function which will be
@@ -103,6 +104,7 @@
         this.fontColor = options.fontColor || "black";
         this.backgroundColor = options.backgroundColor || "none";
         this.fontSize = options.fontSize || "";
+        this.fontFamily = options.fontFamily || "";
         this.barThickness = options.barThickness || 2;
         this.pixelsPerMeter = options.pixelsPerMeter || null;
         this.referenceItemIdx = options.referenceItemIdx || 0;
@@ -148,6 +150,9 @@
             }
             if (isDefined(options.fontSize)) {
                 this.fontSize = options.fontSize;
+            }
+            if (isDefined(options.fontFamily)) {
+                this.fontFamily = options.fontFamily;
             }
             if (isDefined(options.barThickness)) {
                 this.barThickness = options.barThickness;
@@ -251,6 +256,7 @@
         },
         drawMicroscopyScalebar: function(size, text) {
             this.divElt.style.fontSize = this.fontSize;
+            this.divElt.style.fontFamily = this.fontFamily;
             this.divElt.style.textAlign = "center";
             this.divElt.style.color = this.fontColor;
             this.divElt.style.border = "none";
@@ -261,6 +267,7 @@
         },
         drawMapScalebar: function(size, text) {
             this.divElt.style.fontSize = this.fontSize;
+            this.divElt.style.fontFamily = this.fontFamily;
             this.divElt.style.textAlign = "center";
             this.divElt.style.color = this.fontColor;
             this.divElt.style.border = this.barThickness + "px solid " + this.color;
