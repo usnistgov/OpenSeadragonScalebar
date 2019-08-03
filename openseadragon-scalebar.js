@@ -319,6 +319,11 @@
                 var container = this.viewer.container;
                 var x = container.offsetWidth - barWidth;
                 var y = container.offsetHeight - barHeight;
+                var toolbar = this.viewer.toolbar;
+                if (toolbar && this.viewer.isFullPage())
+                {
+                    y -= toolbar.element.offsetHeight;
+                }
                 if (this.stayInsideImage) {
                     var pixel = this.viewer.viewport.pixelFromPoint(
                             new $.Point(1, 1 / this.viewer.source.aspectRatio),
@@ -337,6 +342,11 @@
                 var container = this.viewer.container;
                 var x = 0;
                 var y = container.offsetHeight - barHeight;
+                var toolbar = this.viewer.toolbar;
+                if (toolbar && this.viewer.isFullPage())
+                {
+                    y -= toolbar.element.offsetHeight;
+                }
                 if (this.stayInsideImage) {
                     var pixel = this.viewer.viewport.pixelFromPoint(
                             new $.Point(0, 1 / this.viewer.source.aspectRatio),
