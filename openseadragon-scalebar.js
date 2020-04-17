@@ -14,8 +14,14 @@
  *
  * @author Antoine Vandecreme <antoine.vandecreme@nist.gov>
  */
-(function($) {
-
+(function() {
+    var $ = window.OpenSeadragon;
+    if (!$) {
+        $ = require('openseadragon');
+        if (!$) {
+            throw new Error('OpenSeadragon is missing.');
+        }
+    }
     if (!$.version || $.version.major < 2) {
         throw new Error('This version of OpenSeadragonScalebar requires ' +
                 'OpenSeadragon version 2.0.0+');
@@ -559,4 +565,4 @@
     function isDefined(variable) {
         return typeof (variable) !== "undefined";
     }
-}(OpenSeadragon));
+}());
