@@ -10,20 +10,41 @@
  * software is used.
  */
 
+section {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 2em; 
+    padding-right: 2em;
+    box-sizing: border-box;
+}
+
 .demo {
     line-height: normal;
+    display: flex; 
+    align-items: flex-start; 
+    gap: 1em; 
+    margin-bottom: 50px; 
 }
 
 .openseadragon {
-  float: left;
-  width: 500px;
-  height: 500px;
-  border: 1px solid black;
-  background-color: black;
-  font-family: arial;
-  margin-right: 0.5em;
+    width: 500px;
+    height: 500px;
+    border: 1px solid black;
+    background-color: black;
+    font-family: arial;
+    flex-shrink: 0;  
+}
+
+.site-footer {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 2em;
+    padding-right: 2em;
+    box-sizing: border-box;
 }
 
 form div {
-  margin: 0.5em;
+    margin: 0.5em;
 }

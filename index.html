@@ -20,14 +20,8 @@ software is used.
 
         <!-- NIST template CSS -->
         <link rel="stylesheet" href="https://pages.nist.gov/nist-header-footer/css/nist-combined.css">
-        <script src="https://pages.nist.gov/nist-header-footer/js/jquery-1.9.0.min.js" type="text/javascript" defer="defer"></script>
+    
         <script src="https://pages.nist.gov/nist-header-footer/js/nist-header-footer.js" type="text/javascript" defer="defer"></script>
-
-        <!--
-        updated according to https://github.com/usnistgov/nist-header-footer
-        <link rel="stylesheet" href="static/css/NISTStyle.css">
-        <link rel="stylesheet" href="static/css/NISTPages.css">
-        -->
         
         <link rel='stylesheet' 
               type='text/css'
@@ -39,19 +33,6 @@ software is used.
     </head>
 
     <body>
-        <!--     
-        updated according to https://github.com/usnistgov/nist-header-footer
-        <header class="nist-header">
-            <h1>
-                <a class="nist-logo" target="_blank" href="http://www.nist.gov/" title="Go to nist.gov">National Institute of Standards and Technology</a>
-            </h1>
-            <div class="nist-links">
-                <a class="nist-links-button" target="_blank" href="http://www.nist.gov">NIST Website</a>
-                <a class="nist-links-button mobile-hide" target="_blank" href="http://www.nist.gov/public_affairs/nandyou.cfm">About NIST</a>
-                <a class="nist-links-button mobile-hide" target="_blank" href="https://github.com/usnistgov">usnistgov on Github</a>
-            </div>
-        </header>
-        -->
 
         <section class="home home-title">
             <h1>OpenSeadragon Scalebar Example</h1>
@@ -181,6 +162,7 @@ software is used.
                     wrapVertical: false,
                     zoomPerScroll: 1.2,
                     minZoomImageRatio: 0.5,
+                    subPixelRoundingForTransparency: 2,
                     tileSources: [{
                             type: 'openstreetmaps'
                         }]
@@ -251,26 +233,14 @@ software is used.
             <div class="section-container">
                 <div class="section-content">
                     This plugin and demo are maintained by the
-                    <a href="http://www.nist.gov/itl/ssd/is/">Information System Group</a>
+                    <a href="https://www.nist.gov/itl/ai/applied-ai-research-group">Applied Artificial Intelligence (AI) Research Group</a>
                     within the
-                    <a href="http://www.nist.gov/itl/ssd/">Software and Systems Division</a>.
+                    <a href="http://www.nist.gov/itl/ai">AI Research, Measurement, and Standards Division</a>.
                 </div>
             </div>
         </footer>
 
         <hr>
-        <!--
-        <section class="footer">
-            <a target="_blank" href="http://www.nist.gov/public_affairs/privacy.cfm#privpolicy">Privacy Policy</a>
-            |
-            <a target="_blank" href="http://www.nist.gov/public_affairs/privacy.cfm#secnot">Security Notice</a>
-            |
-            <a href="http://www.nist.gov/public_affairs/privacy.cfm#accesstate">Accessibility Statement</a>
-            |
-            <a target="_blank" href="mailto:peter.bajcsy@nist.gov?subject=Feedback%20on%20OpenSeadragonScalebar%20demo">Send feedback</a>
-            | Last updated: April 13, 2016
-        </section>
-        -->
 
         <!-- Google analytics -->
         <script async type="text/javascript" id="_fed_an_ua_tag" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=NIST&subagency=github&pua=UA-66610693-1&yt=true&exts=ppsx,pps,f90,sch,rtf,wrl,txz,m1v,xlsm,msi,xsd,f,tif,eps,mpg,xml,pl,xlt,c">
